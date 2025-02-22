@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc); /* Beautiful gradient background */
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .introduction {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        .flashcard-container {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .flashcard {
+            height: 70vh;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: white;
+        }
+        .flashcard iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .exit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .exit-button:hover {
+            background: #d32f2f;
+        }
+        .flashcard-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .flashcard-list li {
+            margin: 10px 0;
+        }
+        .flashcard-list a {
+            text-decoration: none;
+            color: #2196F3;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .flashcard-list a:hover {
+            color: #1976D2;
+            text-decoration: underline;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="introduction">
+        <h1>Dental Flashcards</h1>
+        <p>Select a flashcard to begin:</p>
+        <ul class="flashcard-list">
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-658812', 0)">Tooth Morphology</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-357351', 1)">Head and Neck Anatomy</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-773941', 2)">Radiology</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-287419', 3)">Surgical and Oral Instrument</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-657919', 4)">Infection Control</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-658728', 5)">Pharmacology</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-1611656', 6)">Dental Terminology</a></li>
+            <li><a href="#" onclick="startSession('https://www.studystack.com/iflashcardnew-966042', 7)">Definitions</a></li>
+        </ul>
+    </div>
+
+    <div class="flashcard-container" id="flashcardContainer">
+        <div class="flashcard">
+            <iframe id="flashcardFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+        <button class="exit-button" onclick="endSession()">Exit</button>
+    </div>
+
+    <script>
+        const adLinks = [
+            "https://phunaivaizu.com/4/7667810", // Ad for Flashcard 1
+            "https://gogussoch.net/4/7667811",  // Ad for Flashcard 2
+            "https://gakrarsabamt.net/4/7667754", // Ad for Flashcard 3
+            "https://awhiptera.net/4/7667716",   // Ad for Flashcard 4
+            "https://phunaivaizu.com/4/7667810",           // Ad for Flashcard 5
+            "https://phunaivaizu.com/4/7667810",           // Ad for Flashcard 6
+            "https://phunaivaizu.com/4/7667810",           // Ad for Flashcard 7
+            "https://phunaivaizu.com/4/7667810"            // Ad for Flashcard 8
+        ];
+
+        // Function to start a session
+        function startSession(flashcardURL, index) {
+            // Save the selected flashcard index to localStorage
+            localStorage.setItem('lastFlashcardIndex', index);
+
+            // Open popunder ad
+            const popunder = window.open(adLinks[index], '_blank');
+            if (popunder) {
+                popunder.blur();
+                window.focus();
+            }
+
+            // Load the selected flashcard
+            document.querySelector('.introduction').style.display = 'none';
+            document.getElementById('flashcardContainer').style.display = 'flex';
+            document.getElementById('flashcardFrame').src = flashcardURL;
+        }
+
+        // Function to end the session
+        function endSession() {
+            localStorage.removeItem('lastFlashcardIndex'); // Clear the stored index
+            document.getElementById('flashcardContainer').style.display = 'none';
+            document.querySelector('.introduction').style.display = 'block';
+            document.getElementById('flashcardFrame').src = ''; // Clear the iframe
+        }
+
+        // Check localStorage on page load
+        window.addEventListener('load', () => {
+            const lastFlashcardIndex = localStorage.getItem('lastFlashcardIndex');
+            if (lastFlashcardIndex !== null) {
+                // If a flashcard index is stored, load the corresponding flashcard
+                const flashcardURLs = [
+                    "https://www.studystack.com/iflashcardnew-658812", // Tooth Morphology
+                    "https://www.studystack.com/iflashcardnew-357351", // Head and Neck Anatomy
+                    "https://www.studystack.com/iflashcardnew-773941", // Radiology
+                    "https://www.studystack.com/iflashcardnew-287419", // Surgical and Oral Instrument
+                    "https://www.studystack.com/iflashcardnew-657919", // Infection Control
+                    "https://www.studystack.com/iflashcardnew-658728", // Pharmacology
+                    "https://www.studystack.com/iflashcardnew-1611656", // Dental Terminology
+                    "https://www.studystack.com/iflashcardnew-966042"  // Definitions
+                ];
+                const url = flashcardURLs[lastFlashcardIndex];
+                document.querySelector('.introduction').style.display = 'none';
+                document.getElementById('flashcardContainer').style.display = 'flex';
+                document.getElementById('flashcardFrame').src = url;
+            }
+        });
+    </script>
+</body>
+    </html>
